@@ -1,0 +1,108 @@
+{
+	"data_sources": [
+		{
+			"id": "neo4j",
+			"type": "neo4j",
+			"userName": "neo4j",
+			"password": "Mzreana@190$",
+			"url": "jdbc:neo4j:bolt://demo.mareana.com:4587"
+		},
+		{
+			"id": "cassandra",
+			"type": "cassandra",
+			"userName": "cassandra",
+			"password": "cassandra",
+			"contactpoint": "192.168.1.46",
+			"port": 9042,
+			"dataCenter": "datacenter1",
+			"keyspace": "masterdatadb"
+		}
+	],
+	"entities": [
+		{
+			"id": "Batch",
+			"source": "neo4j",
+			"label": "Batch"
+		},
+		{
+			"id": "ProcessOrder",
+			"source": "neo4j",
+			"label": "ProcessOrder"
+		},
+		{
+			"id": "material_master",
+			"source": "cassandra",
+			"label": "MAKT"
+		},
+		{
+			"id": "batch_master",
+			"source": "cassandra",
+			"label": "MAKT"
+		},
+		{
+			"id": "chvw",
+			"source": "hive",
+			"label": "chvw"
+		}
+	],
+	"relations": [
+		{
+			"id": "Batch_to_ProcessOrder_Input",
+			"type": "neo4j_to_neo4j",
+			"start_entity": "Batch",
+			"end_entity": "ProcessOrder",
+			"rel_type": "association",
+			"rel_name": "Input"
+		},
+		{
+			"id": "Batch_to_ProcessOrder_Output",
+			"type": "neo4j_to_neo4j",
+			"start_entity": "Batch",
+			"end_entity": "ProcessOrder",
+			"rel_type": "association",
+			"rel_name": "Output"
+		},
+		{
+			"id": "Batch_to_LimsTest_Test",
+			"type": "neo4j_to_neo4j",
+			"start_entity": "Batch",
+			"end_entity": "LimsTest",
+			"rel_type": "association",
+			"rel_name": "Test"
+		},
+		{
+			"id": "ProcessOrder_to_Batch_Input",
+			"type": "neo4j_to_neo4j",
+			"start_entity": "ProcessOrder",
+			"end_entity": "Batch",
+			"rel_type": "association",
+			"rel_name": "Input"
+		},
+		{
+			"id": "ProcessOrder_to_Batch_Output",
+			"type": "neo4j_to_neo4j",
+			"start_entity": "ProcessOrder",
+			"end_entity": "Batch",
+			"rel_type": "association",
+			"rel_name": "Output"
+		},
+		{
+			"id": "batch_to_mat_master",
+			"type": "neo4j_to_sql",
+			"start_entity": "batch",
+			"end_entity": "material_master",
+			"rel_type": "composition",
+			"left_key": "mat_no",
+			"right_key": "materialNumber"
+		},
+		{
+			"id": "batch_to_batch_master",
+			"type": "neo4j_to_sql",
+			"start_entity": "batch",
+			"end_entity": "batch_master",
+			"rel_type": "composition",
+			"left_key": "batch_no",
+			"right_key": "materialNumber"
+		}
+	]
+}
